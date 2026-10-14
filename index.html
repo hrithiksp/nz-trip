@@ -1109,10 +1109,10 @@ async function flyScene(dir,tok){
   caption.innerHTML=`<div><small>Flight · ${f.code}</small><b>${f.route}</b><span>${f.t} · about 1,940 km</span></div>`;
   caption.hidden=false;caption.classList.remove('in');void caption.offsetWidth;caption.classList.add('in');
   await anim(380,tok,t=>{flight.style.opacity=t;});
+  const hush=sfxJet(.45+3.6);   // engines from the runway hold all the way to touchdown
   await wait(450,tok);
-  const landT=setTimeout(()=>{if(!tok.stop)sfxLand();},2950);
   await anim(3600,tok,t=>place(ease(t)));
-  if(tok.stop)clearTimeout(landT);
+  if(tok.stop){hush();}
   await anim(700,tok,t=>{ring.setAttribute('r',(10+30*t)/k);ring.style.opacity=(1-t).toFixed(2);});
   if(dir==='out'&&!tok.stop){const z=P(...ZQN);Object.assign(view,{s:1.3,x:z[0],y:z[1]});apply();}
   await anim(450,tok,t=>{flight.style.opacity=1-t;});
@@ -1127,23 +1127,41 @@ function audio(){
   return actx;
 }
 function env(a,g,t0,peak,attack,end){g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(peak,t0+attack);g.gain.exponentialRampToValueAtTime(0.0001,end);}
-function sfxLand(){
-  const a=audio();if(!a)return;const t=a.currentTime;
-  /* engine whine winding down */
-  const o=a.createOscillator(),lp=a.createBiquadFilter(),g=a.createGain();
-  o.type='sawtooth';o.frequency.setValueAtTime(1900,t);o.frequency.exponentialRampToValueAtTime(380,t+1.5);
-  lp.type='lowpass';lp.frequency.value=2600;env(a,g,t,.05,.18,t+1.5);
-  o.connect(lp);lp.connect(g);g.connect(a.destination);o.start(t);o.stop(t+1.6);
-  /* air rushing past */
-  const n=a.createBufferSource(),len=Math.floor(a.sampleRate*1.7),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
+function sfxJet(fly){
+  /* one continuous flight: engines spool up on the runway, roar on take-off, cruise,
+     wind down on descent, wheels touch down, then reverse thrust fades. fly = seconds to touchdown. */
+  const a=audio();if(!a)return ()=>{};
+  const t=a.currentTime,land=t+fly,end=land+1.1,master=a.createGain();
+  master.gain.value=1;master.connect(a.destination);
+  /* turbine whine */
+  const o=a.createOscillator(),o2=a.createOscillator(),bp=a.createBiquadFilter(),g=a.createGain();
+  o.type='sawtooth';o2.type='sine';bp.type='bandpass';bp.Q.value=6;
+  const pts=[[0,520],[.55,1500],[1.15,2300],[fly*.55,2150],[fly-.6,1350],[fly,1050],[fly+.35,1500],[fly+1.05,420]];
+  o.frequency.setValueAtTime(pts[0][1],t);o2.frequency.setValueAtTime(pts[0][1]*2,t);bp.frequency.setValueAtTime(pts[0][1],t);
+  pts.slice(1).forEach(([dt,hz])=>{o.frequency.linearRampToValueAtTime(hz,t+dt);o2.frequency.linearRampToValueAtTime(hz*2,t+dt);bp.frequency.linearRampToValueAtTime(hz,t+dt);});
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(.05,t+.4);g.gain.linearRampToValueAtTime(.075,t+1.1);
+  g.gain.linearRampToValueAtTime(.045,t+fly*.55);g.gain.linearRampToValueAtTime(.05,land);g.gain.linearRampToValueAtTime(.07,land+.3);
+  g.gain.exponentialRampToValueAtTime(0.0001,end);
+  const g2=a.createGain();g2.gain.value=.25;
+  o.connect(bp);o2.connect(g2);g2.connect(bp);bp.connect(g);g.connect(master);
+  /* engine roar and rushing air */
+  const len=Math.floor(a.sampleRate*2),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
   for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
-  n.buffer=buf;const bp=a.createBiquadFilter(),g2=a.createGain();
-  bp.type='bandpass';bp.Q.value=1.1;bp.frequency.setValueAtTime(2600,t);bp.frequency.exponentialRampToValueAtTime(260,t+1.6);
-  env(a,g2,t,.32,.3,t+1.65);n.connect(bp);bp.connect(g2);g2.connect(a.destination);n.start(t);n.stop(t+1.7);
+  const n=a.createBufferSource();n.buffer=buf;n.loop=true;
+  const lp=a.createBiquadFilter(),ng=a.createGain();lp.type='lowpass';lp.Q.value=.7;
+  [[0,350],[.9,2800],[1.6,1700],[fly*.55,1500],[fly-.5,1100],[fly,1300],[fly+.3,2400],[fly+1.05,300]].forEach(([dt,hz],i)=>{
+    if(i===0)lp.frequency.setValueAtTime(hz,t);else lp.frequency.linearRampToValueAtTime(hz,t+dt);});
+  ng.gain.setValueAtTime(0.0001,t);ng.gain.exponentialRampToValueAtTime(.12,t+.35);ng.gain.linearRampToValueAtTime(.34,t+1.0);
+  ng.gain.linearRampToValueAtTime(.16,t+1.8);ng.gain.linearRampToValueAtTime(.14,land-.4);ng.gain.linearRampToValueAtTime(.3,land+.3);
+  ng.gain.exponentialRampToValueAtTime(0.0001,end);
+  n.connect(lp);lp.connect(ng);ng.connect(master);
   /* wheels touching down */
-  const th=a.createOscillator(),g3=a.createGain(),tt=t+.62;
-  th.type='sine';th.frequency.setValueAtTime(95,tt);th.frequency.exponentialRampToValueAtTime(42,tt+.28);
-  env(a,g3,tt,.45,.012,tt+.32);th.connect(g3);g3.connect(a.destination);th.start(tt);th.stop(tt+.36);
+  const th=a.createOscillator(),tg=a.createGain();
+  th.type='sine';th.frequency.setValueAtTime(95,land);th.frequency.exponentialRampToValueAtTime(42,land+.28);
+  tg.gain.setValueAtTime(0.0001,t);tg.gain.setValueAtTime(0.0001,land);tg.gain.exponentialRampToValueAtTime(.45,land+.012);tg.gain.exponentialRampToValueAtTime(0.0001,land+.32);
+  th.connect(tg);tg.connect(master);
+  [o,o2,n].forEach(x=>{x.start(t);x.stop(end+.05);});th.start(land-.01);th.stop(land+.4);
+  return ()=>{try{master.gain.cancelScheduledValues(a.currentTime);master.gain.setTargetAtTime(0.0001,a.currentTime,.06);}catch(e){}};
 }
 function sfxVroom(secs){
   /* "vroom vroom": two quick revs, then the engine cruises and fades as the route draws */
