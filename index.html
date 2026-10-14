@@ -1110,17 +1110,57 @@ async function flyScene(dir,tok){
   caption.hidden=false;caption.classList.remove('in');void caption.offsetWidth;caption.classList.add('in');
   await anim(380,tok,t=>{flight.style.opacity=t;});
   await wait(450,tok);
+  const landT=setTimeout(()=>{if(!tok.stop)sfxLand();},2950);
   await anim(3600,tok,t=>place(ease(t)));
+  if(tok.stop)clearTimeout(landT);
   await anim(700,tok,t=>{ring.setAttribute('r',(10+30*t)/k);ring.style.opacity=(1-t).toFixed(2);});
   if(dir==='out'&&!tok.stop){const z=P(...ZQN);Object.assign(view,{s:1.3,x:z[0],y:z[1]});apply();}
   await anim(450,tok,t=>{flight.style.opacity=1-t;});
   flight.hidden=true;flight.style.opacity='';
 }
 
+
+/* ---------- sound effects (made in the page, no files) ---------- */
+let actx=null;
+function audio(){
+  try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();}catch(e){actx=null;}
+  return actx;
+}
+function env(a,g,t0,peak,attack,end){g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(peak,t0+attack);g.gain.exponentialRampToValueAtTime(0.0001,end);}
+function sfxLand(){
+  const a=audio();if(!a)return;const t=a.currentTime;
+  /* engine whine winding down */
+  const o=a.createOscillator(),lp=a.createBiquadFilter(),g=a.createGain();
+  o.type='sawtooth';o.frequency.setValueAtTime(1900,t);o.frequency.exponentialRampToValueAtTime(380,t+1.5);
+  lp.type='lowpass';lp.frequency.value=2600;env(a,g,t,.05,.18,t+1.5);
+  o.connect(lp);lp.connect(g);g.connect(a.destination);o.start(t);o.stop(t+1.6);
+  /* air rushing past */
+  const n=a.createBufferSource(),len=Math.floor(a.sampleRate*1.7),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+  n.buffer=buf;const bp=a.createBiquadFilter(),g2=a.createGain();
+  bp.type='bandpass';bp.Q.value=1.1;bp.frequency.setValueAtTime(2600,t);bp.frequency.exponentialRampToValueAtTime(260,t+1.6);
+  env(a,g2,t,.32,.3,t+1.65);n.connect(bp);bp.connect(g2);g2.connect(a.destination);n.start(t);n.stop(t+1.7);
+  /* wheels touching down */
+  const th=a.createOscillator(),g3=a.createGain(),tt=t+.62;
+  th.type='sine';th.frequency.setValueAtTime(95,tt);th.frequency.exponentialRampToValueAtTime(42,tt+.28);
+  env(a,g3,tt,.45,.012,tt+.32);th.connect(g3);g3.connect(a.destination);th.start(tt);th.stop(tt+.36);
+}
+function sfxArrive(){
+  const a=audio();if(!a)return;const t=a.currentTime;
+  [[1046.5,0],[1568,.11]].forEach(([f,dt])=>{
+    const o=a.createOscillator(),g=a.createGain(),o2=a.createOscillator(),g2=a.createGain();
+    o.type='sine';o.frequency.value=f;env(a,g,t+dt,.16,.008,t+dt+.9);
+    o2.type='sine';o2.frequency.value=f*2.01;env(a,g2,t+dt,.04,.006,t+dt+.35);
+    o.connect(g);g.connect(a.destination);o2.connect(g2);g2.connect(a.destination);
+    o.start(t+dt);o.stop(t+dt+1);o2.start(t+dt);o2.stop(t+dt+.4);
+  });
+}
+
 function setPlayBtn(on){const b=document.getElementById('zplay');b.innerHTML=on?ICON.stop:ICON.play;b.setAttribute('aria-label',on?'Stop the journey':'Play the journey');b.classList.toggle('on',on);}
 function stopPlay(){if(!playing)return;playing.stop=true;}
 async function playJourney(){
   if(playing){stopPlay();return;}
+  audio();   // unlock sound inside the tap
   const tok={stop:false};playing=tok;setPlayBtn(true);hideCallout();
   if(mobile())setSheet('mini');
   document.querySelectorAll('.leg').forEach(g=>{g.classList.add('dim');g.classList.remove('hot');});
@@ -1133,7 +1173,7 @@ async function playJourney(){
     caption.hidden=false;caption.classList.remove('in');void caption.offsetWidth;caption.classList.add('in');
     const lls=main.flatMap(l=>l.path).concat([PLACES[d.base].ll]);
     fitLL(lls,lls.length>2?8:6.5);await wait(650,tok);
-    for(const l of main){if(tok.stop)break;await drawLine(l.path,Math.min(2600,900+l.km*6),tok);}
+    for(const l of main){if(tok.stop)break;await drawLine(l.path,Math.min(2600,900+l.km*6),tok);if(!tok.stop)sfxArrive();}
     await wait(main.length?900:1500,tok);
   }
   if(!tok.stop)await flyScene('back',tok);
