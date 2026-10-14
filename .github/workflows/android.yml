@@ -1,0 +1,56 @@
+# Builds the Android app from the same index.html as the website,
+# and posts it as a download on the repo's Releases page.
+name: Build Android app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - android/**
+      - .github/workflows/android.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Bundle the planner into the app
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp index.html android/app/src/main/assets/index.html
+
+      - name: Build signed APK
+        working-directory: android
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: gradle --no-daemon assembleRelease
+
+      - name: Rename
+        run: cp android/app/build/outputs/apk/release/app-release.apk nz-trip.apk
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: app-v${{ github.run_number }}
+          name: NZ Trip app · build ${{ github.run_number }}
+          make_latest: 'true'
+          files: nz-trip.apk
+          body: |
+            Android app for the South Island road trip (24 Oct – 1 Nov 2026).
+            Works offline. Download **nz-trip.apk** on your phone and open it to install.
+            Built from commit ${{ github.sha }}.

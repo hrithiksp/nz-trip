@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+}
+
+def buildNumber = (System.getenv('VERSION_CODE') ?: '1').toInteger()
+
+android {
+    namespace 'com.hrithiksp.nztrip'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.hrithiksp.nztrip'
+        minSdk 26          // Android 8+
+        targetSdk 35       // Android 15 (S25 Ultra ships with One UI 7 / Android 15)
+        versionCode buildNumber
+        versionName "1.0.${buildNumber}"
+    }
+
+    // A fixed key so each new build installs over the last one and keeps your settings.
+    signingConfigs {
+        release {
+            storeFile file('../nztrip.keystore')
+            storePassword 'nztrip2026'
+            keyAlias 'nztrip'
+            keyPassword 'nztrip2026'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}

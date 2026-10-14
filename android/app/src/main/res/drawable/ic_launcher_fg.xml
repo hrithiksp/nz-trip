@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Two inked peaks over a dashed route, sized for the adaptive-icon safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="@color/icon_fg"
+        android:pathData="M31,68 L46,41 L54,54 L62,44 L77,68 Z" />
+    <path android:fillColor="@color/icon_bg"
+        android:pathData="M46,41 L42,48.5 L45,47 L47,50 L49.5,46.5 Z M62,44 L59,49 L61.5,48 L63,50.5 L64.8,48 Z" />
+    <path android:fillColor="@color/icon_fg"
+        android:pathData="M33,74 h7 v3 h-7 z M44,74 h7 v3 h-7 z M55,74 h7 v3 h-7 z M71,75.5 m-3.2,0 a3.2,3.2 0 1,0 6.4,0 a3.2,3.2 0 1,0 -6.4,0" />
+</vector>
