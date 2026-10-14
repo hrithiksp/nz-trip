@@ -1164,28 +1164,34 @@ function sfxJet(fly){
   return ()=>{try{master.gain.cancelScheduledValues(a.currentTime);master.gain.setTargetAtTime(0.0001,a.currentTime,.06);}catch(e){}};
 }
 function sfxVroom(secs){
-  /* "vroom vroom": two quick revs, then the engine cruises and fades as the route draws */
+  /* deep "vroom vroom": two low revs, then a burbling cruise that fades as the route draws */
   const a=audio();if(!a)return ()=>{};
-  const t=a.currentTime,end=t+Math.max(1.4,secs+.25);
-  const o1=a.createOscillator(),o2=a.createOscillator(),lp=a.createBiquadFilter(),g=a.createGain();
-  const lfo=a.createOscillator(),lg=a.createGain(),trem=a.createGain();
-  o1.type='sawtooth';o2.type='square';lp.type='lowpass';lp.Q.value=4;
-  const f=o1.frequency,f2=o2.frequency,c=lp.frequency;
-  [[0,58],[.32,190],[.5,105],[.88,235],[1.12,130]].forEach(([dt,hz])=>{
-    f.linearRampToValueAtTime(hz,t+dt);f2.linearRampToValueAtTime(hz/2,t+dt);c.linearRampToValueAtTime(hz*7,t+dt);
-  });
-  f.setValueAtTime(58,t);f2.setValueAtTime(29,t);c.setValueAtTime(400,t);
-  f.linearRampToValueAtTime(115,end);f2.linearRampToValueAtTime(57,end);c.linearRampToValueAtTime(600,end);
-  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(.16,t+.06);
-  g.gain.linearRampToValueAtTime(.2,t+.32);g.gain.linearRampToValueAtTime(.11,t+.5);
-  g.gain.linearRampToValueAtTime(.21,t+.88);g.gain.linearRampToValueAtTime(.09,t+1.2);
+  const t=a.currentTime,end=t+Math.max(1.5,secs+.3),master=a.createGain();
+  master.gain.value=1;master.connect(a.destination);
+  const o1=a.createOscillator(),o2=a.createOscillator(),sub=a.createOscillator();
+  const lp=a.createBiquadFilter(),lp2=a.createBiquadFilter(),g=a.createGain(),sg=a.createGain();
+  o1.type='sawtooth';o2.type='triangle';sub.type='sine';
+  lp.type='lowpass';lp.Q.value=1.2;lp2.type='lowpass';lp2.Q.value=.5;lp2.frequency.value=900;
+  const rev=[[0,34],[.34,92],[.55,52],[.95,108],[1.22,62]];
+  const f=o1.frequency,f2=o2.frequency,fs=sub.frequency,c=lp.frequency;
+  f.setValueAtTime(34,t);f2.setValueAtTime(34*1.5,t);fs.setValueAtTime(17,t);c.setValueAtTime(180,t);
+  rev.slice(1).forEach(([dt,hz])=>{f.linearRampToValueAtTime(hz,t+dt);f2.linearRampToValueAtTime(hz*1.5,t+dt);
+    fs.linearRampToValueAtTime(hz/2,t+dt);c.linearRampToValueAtTime(140+hz*3.2,t+dt);});
+  f.linearRampToValueAtTime(56,end);f2.linearRampToValueAtTime(84,end);fs.linearRampToValueAtTime(28,end);c.linearRampToValueAtTime(260,end);
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(.3,t+.07);
+  g.gain.linearRampToValueAtTime(.42,t+.34);g.gain.linearRampToValueAtTime(.24,t+.55);
+  g.gain.linearRampToValueAtTime(.45,t+.95);g.gain.linearRampToValueAtTime(.22,t+1.25);
   g.gain.exponentialRampToValueAtTime(0.0001,end);
-  /* engine pulse rumble */
-  lfo.frequency.value=28;lg.gain.value=.35;trem.gain.value=.65;
-  lfo.connect(lg);lg.connect(trem.gain);
-  o1.connect(lp);o2.connect(lp);lp.connect(trem);trem.connect(g);g.connect(a.destination);
-  [o1,o2,lfo].forEach(o=>{o.start(t);o.stop(end+.05);});
-  return ()=>{try{g.gain.cancelScheduledValues(a.currentTime);g.gain.setTargetAtTime(0.0001,a.currentTime,.05);}catch(e){}};
+  sg.gain.setValueAtTime(0.0001,t);sg.gain.exponentialRampToValueAtTime(.35,t+.1);sg.gain.exponentialRampToValueAtTime(0.0001,end);
+  /* cylinder burble: slow amplitude pulses */
+  const lfo=a.createOscillator(),lg=a.createGain(),trem=a.createGain();
+  lfo.type='square';lfo.frequency.setValueAtTime(11,t);lfo.frequency.linearRampToValueAtTime(19,t+.95);lfo.frequency.linearRampToValueAtTime(12,end);
+  lg.gain.value=.22;trem.gain.value=.78;lfo.connect(lg);lg.connect(trem.gain);
+  const o2g=a.createGain();o2g.gain.value=.35;
+  o1.connect(lp);o2.connect(o2g);o2g.connect(lp);lp.connect(lp2);lp2.connect(trem);trem.connect(g);g.connect(master);
+  sub.connect(sg);sg.connect(master);
+  [o1,o2,sub,lfo].forEach(o=>{o.start(t);o.stop(end+.05);});
+  return ()=>{try{master.gain.cancelScheduledValues(a.currentTime);master.gain.setTargetAtTime(0.0001,a.currentTime,.05);}catch(e){}};
 }
 function sfxArrive(){
   const a=audio();if(!a)return;const t=a.currentTime;
