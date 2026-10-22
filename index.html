@@ -360,6 +360,11 @@ button.rowbtn:focus-visible{outline:2px solid var(--route);outline-offset:-2px}
 .drivetot svg{width:15px;height:15px;fill:var(--route);flex:0 0 auto}
 .drivetot b{color:var(--ink);font-weight:650}
 .drivetot small{color:var(--ink-3);font-size:11.5px}
+.caution{display:flex;gap:10px;align-items:flex-start;background:var(--warn-bg);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:12px;padding:10px 12px;color:var(--ink)}
+.caution svg{width:18px;height:18px;fill:var(--warn);flex:0 0 auto;margin-top:1px}
+.caution b{display:block;color:var(--warn);font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.caution ul{margin:4px 0 0;padding-left:16px;display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.35}
+#app[data-style="tale"] .caution{border-radius:6px}
 .sunline{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .nowcard{display:flex;flex-direction:column;gap:3px;border:1px solid var(--line)}
 button.nowcard{flex-direction:row;align-items:center;background:var(--card);border-radius:12px}
@@ -1018,6 +1023,34 @@ function driveLine(d){
   const alt=d.legs.map(id=>LEGS[id]).find(l=>l.alt);
   return `<div class="drivetot">${ICON.car}<span><b>${hmDur(t.min)}</b> total driving · ${t.km} km${alt?` <small>(+${hmDur(toMins(alt.time)*2)} if you do ${PLACES[alt.to].name})</small>`:''}</span></div>`;
 }
+/* day cautions: the few things that would spoil the day if missed */
+const CAUTION={
+ d1:['Message Fiordland Hotel that you will arrive about 21:15. Check-in closes at 22:00.',
+     'Eat in Frankton. Most Te Anau kitchens are closed by the time you arrive.',
+     'Last hour of the drive is in the dark. Watch for sheep and cattle on the road.'],
+ d2:['Pack lunch and snacks tonight. There is almost nothing to buy at Milford Sound.',
+     'Fill both cars in Te Anau the night before. No fuel on the Milford Road or at Milford.',
+     'Check the Milford Road status before 06:15. In spring it can close for avalanche risk or need snow chains.',
+     'No phone signal for most of the road. Download offline maps first.'],
+ d3:['Long day: about 5 hours of driving. Swap drivers at Glenorchy.',
+     'The road past Glenorchy to Paradise is gravel. Check the Avis terms before going.',
+     'Crown Range is steep and winding, and can get snow. Check the road status before you leave Queenstown.'],
+ d4:['Check the DOC page and NZ Avalanche Advisory the evening before. Turn back if the ridge has snow.',
+     'At least 2 L of water each. There is no water or shade on the track.'],
+ d5:['Rob Roy Glacier means 30 km of gravel road and creek fords. Check the Avis terms first.'],
+ d6:['Fill up in Wānaka. There is no fuel between Tarras and Omarama over the Lindis Pass.'],
+ d7:['Leave by 07:30. The Hooker Valley car park fills up by mid-morning.',
+     'Fill up in Tekapo before heading to Mt Cook.',
+     'Tekapo nights get close to freezing. Bring warm layers for stargazing.'],
+ d8:['Skyline is booked for 13:00, so keep the Cromwell and Kawarau stops short.',
+     'Confirm the Tekapo check-out and Queenstown check-in times in the Airbnb app.'],
+ d9:['Cars back at the airport by 18:00 with full tanks.',
+     'Bag drop closes 60 min before the 20:50 flight. Carry-on liquids 100 ml each, 7 kg total.'],
+};
+function cautionCard(d){
+  const c=CAUTION[d.id];if(!c||!c.length)return '';
+  return `<div class="caution" role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg><div><b>Don't forget</b><ul>${c.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
+}
 function sunLine(d){
   const [y,m,dd]=dayDate(d),ll=PLACES[d.base].ll,t=sunTimes(y,m,dd,ll[1],ll[0]);if(!t)return '';
   const w=TEMPS[d.id];
@@ -1422,6 +1455,7 @@ function renderDay(id){
   pbody.innerHTML=`
   <div><div class="eyebrow">Day ${i+1} · ${dayLabel(d)}</div><h2>${d.title}</h2>
   <div class="sub">${p.kind==='stay'?`Tonight: <button class="back" data-place="${d.base}">${p.name} · ${p.stay.prop}</button>`:'Flying home tonight'}</div>${sunLine(d)}${driveLine(d)}</div>
+  ${cautionCard(d)}
   <div class="card pad legcard"><div class="ico" style="--c:var(--spot)">${ICON.clock}</div><div class="grow"><div class="big">Leave ${d.leave.tm}</div><div class="s"><b style="color:var(--ink);font-weight:600">${d.leave.t}.</b> ${d.leave.n}</div></div></div>
   ${d.legs.length?`<div class="sec">${d.legs.map(legCard).join('')}</div>`:''}
   <div class="sec"><h3>Plan</h3><div class="card">${renderItems(d.items)}</div></div>
