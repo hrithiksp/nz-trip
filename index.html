@@ -356,6 +356,10 @@ button.rowbtn:focus-visible{outline:2px solid var(--route);outline-offset:-2px}
 #callout .eyebrow{font-size:10.5px;margin-bottom:1px}
 .sunline .temp b{color:var(--ink);font-weight:650}
 .sunline .temp small{font-size:11px;color:var(--ink-3)}
+.drivetot{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.drivetot svg{width:15px;height:15px;fill:var(--route);flex:0 0 auto}
+.drivetot b{color:var(--ink);font-weight:650}
+.drivetot small{color:var(--ink-3);font-size:11.5px}
 .sunline{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .nowcard{display:flex;flex-direction:column;gap:3px;border:1px solid var(--line)}
 button.nowcard{flex-direction:row;align-items:center;background:var(--card);border-radius:12px}
@@ -466,6 +470,7 @@ const PLACES = {
             rooms:'Three-bedroom house · hot tub, full kitchen, lake view', price:'AUD 1,758.19',
             notes:['!Extra mattress requested (bunk beds). Not confirmed by the property yet','Free cancellation ended 11 Oct, now non-refundable','Free private parking']}},
   glenorchy:{mq:'Glenorchy, New Zealand', name:'Glenorchy', kind:'spot', ll:[168.385,-44.86], days:['d3'], legIn:'g1', sub:'Detour on the drive to Wānaka, Mon 26 Oct'},
+  arthurs:{mq:'Shotover Jet, Arthurs Point', name:'Shotover Jet & Onsen', kind:'spot', ll:[168.69,-44.985], days:['d9'], legIn:'a1', sub:'Arthurs Point, Sun 1 Nov morning'},
   isthmus:{mq:'Isthmus Peak Track car park, Stewart Creek, State Highway 6', name:'Isthmus Peak', kind:'hike', ll:[169.24,-44.515], days:['d4'], legIn:'h1', sub:'Hike day Tue 27 Oct · 6–7 hr return'},
   diamond:{mq:'Diamond Lake Conservation Area car park', name:'Diamond Lake', kind:'hike', ll:[168.96,-44.655], days:['d5'], legIn:'h2', sub:'Rocky Mountain loop · about 3 hr'},
   robroy:{mq:'Raspberry Creek car park, Mount Aspiring Road', name:'Rob Roy Glacier', kind:'hike', ll:[168.74,-44.53], days:['d5'], legIn:'h3', sub:'Alternative hike · lower lookout only in spring'},
@@ -494,8 +499,9 @@ const LEGS = {
   l5:{day:'d9', from:'qtown', to:'zqn', km:8, time:'15m', via:'Return rental car, then check in', path:[[168.662,-45.031],[168.70,-45.026],[168.739,-45.021]], mid:-1},
   h1:{day:'d4', from:'wanaka', to:'isthmus', km:40, time:'35m', each:true, via:'via Albert Town and the Lake Hāwea shore (SH6)', path:[[169.1438,-44.6812],[169.17,-44.69],[169.21,-44.62],[169.22,-44.52],[169.24,-44.515]], mid:2},
   h2:{day:'d5', from:'wanaka', to:'diamond', km:19, time:'20m', each:true, via:'Wānaka–Mount Aspiring Road, sealed', path:[[169.1438,-44.6812],[169.10,-44.69],[169.05,-44.676],[169.0,-44.666],[168.96,-44.655]], mid:2},
-  h3:{day:'d5', opt:true, from:'wanaka', to:'robroy', km:54, time:'1h 20m', each:true, via:'last 30 km gravel with fords', path:[[169.1438,-44.6812],[169.10,-44.69],[169.05,-44.676],[169.0,-44.666],[168.96,-44.655],[168.9,-44.64],[168.82,-44.6],[168.77,-44.56],[168.74,-44.53]], mid:6},
+  h3:{day:'d5', opt:true, alt:true, from:'wanaka', to:'robroy', km:54, time:'1h 20m', each:true, via:'last 30 km gravel with fords', path:[[169.1438,-44.6812],[169.10,-44.69],[169.05,-44.676],[169.0,-44.666],[168.96,-44.655],[168.9,-44.64],[168.82,-44.6],[168.77,-44.56],[168.74,-44.53]], mid:6},
   g1:{day:'d3', from:'qtown', to:'glenorchy', km:46, time:'45m', each:true, via:'along Lake Wakatipu, past Bob\'s Cove and Bennett\'s Bluff', path:[[168.662,-45.031],[168.64,-45.025],[168.58,-45.012],[168.5,-44.968],[168.43,-44.905],[168.385,-44.86]], mid:3},
+  a1:{day:'d9', from:'qtown', to:'arthurs', km:7, time:'10m', each:true, via:'Gorge Road to Arthurs Point', path:[[168.662,-45.031],[168.675,-45.005],[168.69,-44.985]], mid:-1},
   x1:{day:'d2', from:'teanau', to:'milford', km:120, time:'2h', each:true, via:'Milford Road (SH94) · no fuel at Milford',
       path:[[167.726,-45.4212],[167.76,-45.33],[167.8,-45.22],[167.88,-45.12],[167.97,-45.02],[168.05,-44.9],[168.12,-44.82],[168.06,-44.77],[168.0,-44.74],[167.95,-44.7],[167.926,-44.67]], mid:4},
   x2:{day:'d7', opt:true, from:'tekapo', to:'cook', km:105, time:'1h 20m', each:true, via:'via SH8 & SH80 along Lake Pukaki',
@@ -586,7 +592,7 @@ const DAYS = [
    {tm:'15:30', t:'Check in at the Queenstown Airbnb', s:'booked', n:'Entire apartment, 4 beds for 7 guests. Check-in time to confirm.'},
    {tm:'16:30', t:'Lakefront and Queenstown Gardens', s:'idea', q:'Queenstown Gardens', m:'Queenstown Gardens', n:'Easy walk along the water to the peninsula gardens. Free.'},
  ]},
- {id:'d9', wd:'Sun', dn:1, mon:'Nov', title:'Queenstown day & fly home', base:'zqn', legs:['l5'],
+ {id:'d9', wd:'Sun', dn:1, mon:'Nov', title:'Queenstown day & fly home', base:'zqn', legs:['a1','l5'],
   leave:{tm:'TBC', t:'Check out of the Queenstown Airbnb', n:'Check-out time to confirm. Keep bags in the cars for the day. Cars are due back at the airport by 18:00.'}, items:[
    {tm:'TBC', t:'Check out of the Airbnb', s:'check', n:'Time to confirm.'},
    {tm:'10:00', t:'Shotover Jet', s:'tobook', u:'https://www.shotoverjet.com', ul:'Book Shotover Jet', q:'Shotover Jet Queenstown', n:'Jet boat through the Shotover River canyons, about 25 min on the water. Leaves from Arthurs Point, 10 min drive from town. Allow about an hour in total.'},
@@ -1000,6 +1006,18 @@ const hm=m=>`${Math.floor(m/60)}:${String(Math.round(m%60)).padStart(2,'0')}`.re
 const dayDate=d=>d.mon==='Nov'?[2026,11,d.dn]:[2026,10,d.dn];
 /* typical late-October temps, from NIWA 1991–2020 normals (Oct/Nov interpolated). Swap in forecasts closer to the date. */
 const TEMPS={d1:[16,5,'Te Anau'],d2:[15,6,'Milford Sound, often wet'],d3:[17,6,'Wānaka'],d4:[17,6,'Wānaka, colder on the summit'],d5:[17,6,'Wānaka'],d6:[16,4,'Lake Tekapo'],d7:[16,4,'Lake Tekapo, cooler at Mt Cook'],d8:[16,5,'Queenstown'],d9:[16,5,'Queenstown']};
+/* total driving for a day: every leg, out-and-back legs counted twice, alternatives left out */
+const toMins=t=>{const h=/(\d+)h/.exec(t),m=/(\d+)m/.exec(t);return (h?+h[1]*60:0)+(m?+m[1]:0);};
+const hmDur=m=>m>=60?`${Math.floor(m/60)}h${m%60?' '+String(m%60).padStart(2,'0')+'m':''}`:`${m} min`;
+function driveTotal(d){
+  let km=0,min=0;d.legs.map(id=>LEGS[id]).filter(l=>!l.alt).forEach(l=>{const k=l.each?2:1;km+=l.km*k;min+=toMins(l.time)*k;});
+  return {km,min};
+}
+function driveLine(d){
+  const t=driveTotal(d);if(!t.min)return '';
+  const alt=d.legs.map(id=>LEGS[id]).find(l=>l.alt);
+  return `<div class="drivetot">${ICON.car}<span><b>${hmDur(t.min)}</b> total driving · ${t.km} km${alt?` <small>(+${hmDur(toMins(alt.time)*2)} if you do ${PLACES[alt.to].name})</small>`:''}</span></div>`;
+}
 function sunLine(d){
   const [y,m,dd]=dayDate(d),ll=PLACES[d.base].ll,t=sunTimes(y,m,dd,ll[1],ll[0]);if(!t)return '';
   const w=TEMPS[d.id];
@@ -1380,7 +1398,8 @@ function renderOverview(){
   <div class="sec"><h3>Still to sort out</h3><div class="card list">${todo.map(i=>`<button class="rowbtn" data-day="${i.d.id}"><div class="cal"><small>${i.d.wd}</small><b>${i.d.dn}</b></div><div class="grow"><div class="t">${i.t}</div><div class="s">${i.d.title}</div></div>${chip(i.s)}</button>`).join('')}</div></div>
   <div class="sec"><h3>Day by day</h3><div class="card list">${DAYS.map(d=>{
     const k=counts(d.items);const lg=d.legs.map(id=>LEGS[id]).find(l=>!l.opt);
-    const sub=[`Leave ${d.leave.tm}`,lg?`${lg.km} km · ${lg.time}`:'No long drive',PLACES[d.base].kind==='stay'?`Night in ${PLACES[d.base].name}`:'Fly home'].join(' · ');
+    const dt=driveTotal(d);
+    const sub=[`Leave ${d.leave.tm}`,dt.min?`${hmDur(dt.min)} driving · ${dt.km} km`:'No driving',PLACES[d.base].kind==='stay'?`Night in ${PLACES[d.base].name}`:'Fly home'].join(' · ');
     return `<button class="rowbtn" data-day="${d.id}"><div class="cal"><small>${d.wd}</small><b>${d.dn}</b></div><div class="grow"><div class="t">${d.title}</div><div class="s">${sub}</div></div>${k.tobook?`<span class="chip warn">${k.tobook}</span>`:''}<span class="chev">›</span></button>`}).join('')}</div></div>
   <div class="sec"><h3>Stays</h3><div class="card list">${Object.entries(PLACES).filter(([,p])=>p.stay).map(([id,p])=>`<button class="rowbtn" data-place="${id}"><div class="ico" style="--c:var(--stay)">${ICON.stay}</div><div class="grow"><div class="t">${p.name}</div><div class="s">${p.stay.prop} · ${p.stay.dates}</div></div><span class="chev">›</span></button>`).join('')}</div></div>
   <div class="sec"><h3>Filming locations on your route</h3><div class="card list">${LORE.map((l,i)=>`<button class="rowbtn" data-lore="${i}"><div class="ico" style="--c:var(--lore);border-radius:8px">${ICON.lore}</div><div class="grow"><div class="t">${l.n}</div><div class="s">${l.at} · ${l.f}</div></div>${l.day?`<span class="chip plan">${dayById(l.day).wd} ${dayById(l.day).dn}</span>`:'<span class="chip idea">Side trip</span>'}</button>`).join('')}</div></div>
@@ -1402,7 +1421,7 @@ function renderDay(id){
   const prev=DAYS[i-1],next=DAYS[i+1];
   pbody.innerHTML=`
   <div><div class="eyebrow">Day ${i+1} · ${dayLabel(d)}</div><h2>${d.title}</h2>
-  <div class="sub">${p.kind==='stay'?`Tonight: <button class="back" data-place="${d.base}">${p.name} · ${p.stay.prop}</button>`:'Flying home tonight'}</div>${sunLine(d)}</div>
+  <div class="sub">${p.kind==='stay'?`Tonight: <button class="back" data-place="${d.base}">${p.name} · ${p.stay.prop}</button>`:'Flying home tonight'}</div>${sunLine(d)}${driveLine(d)}</div>
   <div class="card pad legcard"><div class="ico" style="--c:var(--spot)">${ICON.clock}</div><div class="grow"><div class="big">Leave ${d.leave.tm}</div><div class="s"><b style="color:var(--ink);font-weight:600">${d.leave.t}.</b> ${d.leave.n}</div></div></div>
   ${d.legs.length?`<div class="sec">${d.legs.map(legCard).join('')}</div>`:''}
   <div class="sec"><h3>Plan</h3><div class="card">${renderItems(d.items)}</div></div>
