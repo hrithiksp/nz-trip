@@ -476,9 +476,9 @@ const PLACES = {
             notes:['!Extra mattress requested (bunk beds). Not confirmed by the property yet','Free cancellation ended 11 Oct, now non-refundable','Free private parking']}},
   glenorchy:{mq:'Glenorchy, New Zealand', name:'Glenorchy', kind:'spot', ll:[168.385,-44.86], days:['d3'], legIn:'g1', sub:'Detour on the drive to Wānaka, Mon 26 Oct'},
   arthurs:{mq:'Shotover Jet, Arthurs Point', name:'Shotover Jet & Onsen', kind:'spot', ll:[168.69,-44.985], days:['d9'], legIn:'a1', sub:'Arthurs Point, Sun 1 Nov morning'},
+  brewster:{mq:'Fantail Falls car park, Haast Pass', name:'Brewster Track', kind:'hike', ll:[169.15,-44.1], days:['d5'], legIn:'b1', sub:'Brewster Hut and glacier views, Wed 28 Oct · 6–8 hr return'},
+  bluepools:{mq:'Blue Pools Track car park, Makarora', name:'Blue Pools', kind:'spot', ll:[169.205,-44.19], days:['d5'], sub:'Short walk on the drive back, Wed 28 Oct'},
   isthmus:{mq:'Isthmus Peak Track car park, Stewart Creek, State Highway 6', name:'Isthmus Peak', kind:'hike', ll:[169.24,-44.515], days:['d4'], legIn:'h1', sub:'Hike day Tue 27 Oct · 6–7 hr return'},
-  diamond:{mq:'Diamond Lake Conservation Area car park', name:'Diamond Lake', kind:'hike', ll:[168.96,-44.655], days:['d5'], legIn:'h2', sub:'Rocky Mountain loop · about 3 hr'},
-  robroy:{mq:'Raspberry Creek car park, Mount Aspiring Road', name:'Rob Roy Glacier', kind:'hike', ll:[168.74,-44.53], days:['d5'], legIn:'h3', sub:'Alternative hike · lower lookout only in spring'},
   tekapo:{mq:'Lake Tekapo township, New Zealand', name:'Lake Tekapo', kind:'stay', n:3, ll:[170.477,-44.004], days:['d6','d7','d8'], legIn:'l3',
           stay:{prop:'Airbnb · entire home', via:'Airbnb', nights:2, dates:'Thu 29 – Sat 31 Oct',
             addr:'Lake Tekapo (exact address in the Airbnb app)', host:'Christopher Francis', checkin:'TBC', checkout:'TBC',
@@ -503,10 +503,9 @@ const LEGS = {
       path:LINDIS.slice(3).reverse().concat([[169.41,-44.84],[169.33,-44.92],[169.26,-44.99],[169.19,-45.045],[169.1,-45.03],[169.0,-45.03],[168.92,-45.02],[168.84,-44.995],[168.78,-45.015],[168.739,-45.021],[168.70,-45.026],[168.662,-45.031]]), mid:7},
   l5:{day:'d9', from:'qtown', to:'zqn', km:8, time:'15m', via:'Return rental car, then check in', path:[[168.662,-45.031],[168.70,-45.026],[168.739,-45.021]], mid:-1},
   h1:{day:'d4', from:'wanaka', to:'isthmus', km:40, time:'35m', each:true, via:'via Albert Town and the Lake Hāwea shore (SH6)', path:[[169.1438,-44.6812],[169.17,-44.69],[169.21,-44.62],[169.22,-44.52],[169.24,-44.515]], mid:2},
-  h2:{day:'d5', from:'wanaka', to:'diamond', km:19, time:'20m', each:true, via:'Wānaka–Mount Aspiring Road, sealed', path:[[169.1438,-44.6812],[169.10,-44.69],[169.05,-44.676],[169.0,-44.666],[168.96,-44.655]], mid:2},
-  h3:{day:'d5', opt:true, alt:true, from:'wanaka', to:'robroy', km:54, time:'1h 20m', each:true, via:'last 30 km gravel with fords', path:[[169.1438,-44.6812],[169.10,-44.69],[169.05,-44.676],[169.0,-44.666],[168.96,-44.655],[168.9,-44.64],[168.82,-44.6],[168.77,-44.56],[168.74,-44.53]], mid:6},
   g1:{day:'d3', from:'qtown', to:'glenorchy', km:46, time:'45m', each:true, via:'along Lake Wakatipu, past Bob\'s Cove and Bennett\'s Bluff', path:[[168.662,-45.031],[168.64,-45.025],[168.58,-45.012],[168.5,-44.968],[168.43,-44.905],[168.385,-44.86]], mid:3},
   a1:{day:'d9', from:'qtown', to:'arthurs', km:7, time:'10m', each:true, via:'Gorge Road to Arthurs Point', path:[[168.662,-45.031],[168.675,-45.005],[168.69,-44.985]], mid:-1},
+  b1:{day:'d5', from:'wanaka', to:'brewster', km:85, time:'1h 15m', each:true, via:'via Lake Hāwea, Makarora and the Haast Pass (SH6)', path:[[169.1438,-44.6812],[169.17,-44.69],[169.21,-44.62],[169.22,-44.52],[169.24,-44.40],[169.25,-44.3],[169.23,-44.23],[169.205,-44.19],[169.15,-44.1]], mid:5},
   x1:{day:'d2', from:'teanau', to:'milford', km:120, time:'2h', each:true, via:'Milford Road (SH94) · no fuel at Milford',
       path:[[167.726,-45.4212],[167.76,-45.33],[167.8,-45.22],[167.88,-45.12],[167.97,-45.02],[168.05,-44.9],[168.12,-44.82],[168.06,-44.77],[168.0,-44.74],[167.95,-44.7],[167.926,-44.67]], mid:4},
   x2:{day:'d7', opt:true, from:'tekapo', to:'cook', km:105, time:'1h 20m', each:true, via:'via SH8 & SH80 along Lake Pukaki',
@@ -559,15 +558,18 @@ const DAYS = [
    {tm:'15:30', t:'Back at the house, hot tub', s:'plan'},
    {tm:'20:00', t:'That Wānaka Tree at sunset', s:'idea', n:'Walking distance from the lakefront.'},
  ]},
- {id:'d5', wd:'Wed', dn:28, title:'Easier walk & Central Otago', base:'wanaka', legs:['h2','h3'],
-  leave:{tm:'08:30', t:'Leave Altitude on Aubrey', n:'20 min to Diamond Lake. Back in town by lunchtime for the afternoon.'}, items:[
-   {tm:'08:30', t:'Rocky Mountain via Diamond Lake', s:'idea', q:'Rocky Mountain Diamond Lake Wanaka', m:'Diamond Lake Conservation Area car park', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/diamond-lake-and-hospital-flat/things-to-do/rocky-mountain-track/', n:'About 3 hr loop from the Diamond Lake car park, 18.5 km west of town on a sealed road. Lake and Mt Aspiring views from the top. Some steep, slippery sections, and drop-offs on the eastern side.'},
-   {tm:'', t:'Alternative: Rob Roy Glacier, lower lookout', s:'idea', q:'Rob Roy Glacier Track', m:'Raspberry Creek car park, Mount Aspiring Road', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/mount-aspiring-national-park/things-to-do/tracks/rob-roy-track/', n:'1h 20m drive each way, the last 30 km on gravel with fords. Check the Avis terms on unsealed roads first. DOC advises not going past the lower lookout from May to November because of avalanches.'},
-   {tm:'', t:'Easy option: Mt Iron', s:'idea', q:'Mount Iron Wanaka', m:'Mount Iron Track car park Wanaka', n:'1.5 hr loop right by town, good views for little effort.'},
-   {tm:'13:00', t:'Afternoon', s:'idea', q:0, opts:[
-     {b:'Cromwell & Bannockburn', n:'heritage precinct, fruit stalls, wineries (designated driver)'},
-     {b:'Cardrona Distillery & Crown Range', n:'tours need booking', u:'https://www.cardronadistillery.com'},
+ {id:'d5', wd:'Wed', dn:28, title:'Brewster Track & Blue Pools', base:'wanaka', legs:['b1'],
+  leave:{tm:'07:00', t:'Leave Altitude on Aubrey', n:'1h 15m to the Fantail Falls car park on the Haast Pass, then a 6–8 hour hike. An early start keeps you off the mountain in the late afternoon.'}, items:[
+   {tm:'07:00', t:'Drive to Fantail Falls car park', s:'plan', m:'Fantail Falls car park, Haast Pass', n:'About 85 km past Lake Hāwea and Makarora on SH6. The track starts across the river from the car park.'},
+   {tm:'08:15', t:'Brewster Track to Brewster Hut', s:'plan', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/mount-aspiring-national-park/things-to-do/tracks/brewster-track/', q:'Brewster Hut Brewster Glacier', n:'First ford the Haast River (no bridge), then a very steep climb of about 1,000 m through beech forest to the bushline and up a tussock ridge. About 2½–3 hr up to the hut, 6–8 hr return. DOC rates it Advanced.'},
+   {tm:'11:15', t:'Brewster Glacier views from the hut and ridge', s:'plan', q:'Brewster Glacier', n:'Lunch at the hut looking across to Mt Brewster and the glacier. The marked track ends at the hut. Going on to the glacier itself is an unmarked alpine route, so only go further if you are experienced and equipped.'},
+   {tm:'12:15', t:'Head back down', s:'plan', n:'Take the descent slowly. It is steep and slippery, and poles help. Re-cross the river only if it is still low and clear.'},
+   {tm:'15:00', t:'Blue Pools walk', s:'idea', q:'Blue Pools Makarora', m:'Blue Pools Track car park, Makarora', n:'Flat 30 min return through beech forest to clear blue pools and two swing bridges. On the way back, a nice wind-down after the climb.'},
+   {tm:'', t:'If rain or the river rules Brewster out', s:'idea', q:0, opts:[
+     {b:'Rocky Mountain via Diamond Lake', n:'3 hr loop, 20 min from town'},
+     {b:'Mt Iron', n:'1.5 hr loop right by town'},
      {b:'Puzzling World', n:'illusion rooms and maze, 2 km from town'}]},
+   {tm:'17:00', t:'Back in Wānaka, hot tub', s:'plan'},
  ]},
  {id:'d6', wd:'Thu', dn:29, title:'Scenic drive Wānaka → Lake Tekapo', base:'tekapo', legs:['l3'],
   leave:{tm:'09:30', t:'Leave Altitude on Aubrey', n:'This is the day for roadside sightseeing. 2h 40m of driving, about 6 hours with stops. Saturday\'s drive back is a straight run.'}, items:[
@@ -645,7 +647,8 @@ const FOOD={
     {b:'Francesca\'s Italian Kitchen', n:'local favourite for pasta and pizza'}]},
  ],
  d5:[
-  {tm:'12:30', t:'Lunch and real fruit ice cream in Cromwell', s:'food', q:'Cromwell fruit stall real fruit ice cream', n:'Real fruit ice cream is a Kiwi classic: frozen berries blended into vanilla ice cream while you wait. The Cromwell fruit stalls do it best.'},
+  {tm:'06:45', t:'Packed lunch and snacks for the hike', s:'food', q:0, n:'There is nothing to buy on the track. Grab extra snacks, at least 2 L of water each, and something warm for the hut.'},
+  {tm:'15:30', t:'Coffee stop in Makarora', s:'food', q:'Makarora Country Cafe', n:'Small café at the Makarora settlement on the drive back.'},
   {tm:'19:00', t:'Dinner: BBQ at the house or Big Fig', s:'food', q:0, n:'Last night in Wānaka. Make the most of the hot tub.'},
  ],
  d6:[
@@ -1010,7 +1013,7 @@ function sunTimes(y,m,d,lat,lon,zen){
 const hm=m=>`${Math.floor(m/60)}:${String(Math.round(m%60)).padStart(2,'0')}`.replace(/:60$/,':59');
 const dayDate=d=>d.mon==='Nov'?[2026,11,d.dn]:[2026,10,d.dn];
 /* typical late-October temps, from NIWA 1991–2020 normals (Oct/Nov interpolated). Swap in forecasts closer to the date. */
-const TEMPS={d1:[16,5,'Te Anau'],d2:[15,6,'Milford Sound, often wet'],d3:[17,6,'Wānaka'],d4:[17,6,'Wānaka, colder on the summit'],d5:[17,6,'Wānaka'],d6:[16,4,'Lake Tekapo'],d7:[16,4,'Lake Tekapo, cooler at Mt Cook'],d8:[16,5,'Queenstown'],d9:[16,5,'Queenstown']};
+const TEMPS={d1:[16,5,'Te Anau'],d2:[15,6,'Milford Sound, often wet'],d3:[17,6,'Wānaka'],d4:[17,6,'Wānaka, colder on the summit'],d5:[17,6,'Wānaka, much colder at Brewster Hut'],d6:[16,4,'Lake Tekapo'],d7:[16,4,'Lake Tekapo, cooler at Mt Cook'],d8:[16,5,'Queenstown'],d9:[16,5,'Queenstown']};
 /* total driving for a day: every leg, out-and-back legs counted twice, alternatives left out */
 const toMins=t=>{const h=/(\d+)h/.exec(t),m=/(\d+)m/.exec(t);return (h?+h[1]*60:0)+(m?+m[1]:0);};
 const hmDur=m=>m>=60?`${Math.floor(m/60)}h${m%60?' '+String(m%60).padStart(2,'0')+'m':''}`:`${m} min`;
@@ -1037,7 +1040,11 @@ const CAUTION={
      'Crown Range is steep and winding, and can get snow. Check the road status before you leave Queenstown.'],
  d4:['Check the DOC page and NZ Avalanche Advisory the evening before. Turn back if the ridge has snow.',
      'At least 2 L of water each. There is no water or shade on the track.'],
- d5:['Rob Roy Glacier means 30 km of gravel road and creek fords. Check the Avis terms first.'],
+ d5:['Advanced track: very steep, about 1,000 m of climbing and 6–8 hours return. Turn around by 12:30 wherever you are.',
+     'The Haast River has no bridge. Don\'t start if rain is forecast or the river is high, fast or discoloured. It can rise while you are up there.',
+     'Late October is still avalanche season above the bushline. Check the DOC page and NZ Avalanche Advisory the evening before.',
+     'The glacier has no marked track past the hut. View it from the hut and ridge.',
+     'Fill up in Wānaka before you leave.'],
  d6:['Fill up in Wānaka. There is no fuel between Tarras and Omarama over the Lindis Pass.'],
  d7:['Leave by 07:30. The Hooker Valley car park fills up by mid-morning.',
      'Fill up in Tekapo before heading to Mt Cook.',
