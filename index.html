@@ -486,6 +486,8 @@ const PLACES = {
   lindis:{mq:'Lindis Pass summit lookout', name:'Lindis Pass', kind:'spot', ll:[169.65,-44.59], days:['d4','d6'], sub:'Summit lookout at 971 m'},
   peters:{mq:"Peters Lookout, Mount Cook Road", name:'Peters Lookout', kind:'spot', ll:[170.06,-44.07], days:['d4'], sub:'Lake Pukaki with Aoraki behind, Tue 27 Oct'},
   tasman:{mq:'Blue Lakes and Tasman Glacier View car park, Tasman Valley Road', name:'Tasman Glacier View', kind:'spot', ll:[170.17,-43.7], days:['d4'], legIn:'t1', sub:'Blue Lakes and the glacier lake, Tue 27 Oct'},
+  omarama:{mq:'Omarama, New Zealand', name:'Omarama', kind:'spot', ll:[169.97,-44.49], days:['d4'], nopin:1},
+  clay:{mq:'Omarama Clay Cliffs, Henburn Road', name:'Omarama Clay Cliffs', kind:'spot', ll:[169.88,-44.455], days:['d4'], legIn:'c1', sub:'Last stop on the way home, Tue 27 Oct'},
   cook:  {mq:'Hooker Valley Track car park, White Horse Hill', name:'Aoraki / Mt Cook', kind:'spot', ll:[170.098,-43.735], days:['d4','d7'], legIn:'m1', sub:'Hooker Valley Track from White Horse Hill · Tue 27 Oct alpine drive'},
   qtown: {mq:'Queenstown, New Zealand', name:'Queenstown', kind:'stay', n:4, ll:[168.662,-45.031], days:['d8','d9'], legIn:'l4', left:true,
           stay:{prop:'Airbnb · entire apartment', via:'Airbnb', nights:1, dates:'Sat 31 Oct – Sun 1 Nov',
@@ -509,6 +511,7 @@ const LEGS = {
   b1:{day:'d5', from:'wanaka', to:'brewster', km:85, time:'1h 15m', each:true, via:'via Lake Hāwea, Makarora and the Haast Pass (SH6)', path:[[169.1438,-44.6812],[169.17,-44.69],[169.21,-44.62],[169.22,-44.52],[169.24,-44.40],[169.25,-44.3],[169.23,-44.23],[169.205,-44.19],[169.15,-44.1]], mid:5},
   m1:{day:'d4', from:'wanaka', to:'cook', km:210, time:'2h 45m', each:true, via:'Lindis Pass, Omarama, Twizel and Lake Pukaki (SH8, SH80)', path:[[169.1438,-44.6812],[169.2,-44.715],[169.28,-44.73],[169.38,-44.77],[169.48,-44.72],[169.58,-44.65],[169.65,-44.59],[169.78,-44.53],[169.97,-44.49],[170.04,-44.38],[170.1,-44.26],[170.14,-44.23],[170.14,-44.215],[170.07,-44.16],[170.05,-44.05],[170.08,-43.92],[170.1,-43.82],[170.098,-43.735]], mid:8},
   t1:{day:'d4', from:'cook', to:'tasman', km:8, time:'15m', each:true, via:'Tasman Valley Road', path:[[170.098,-43.735],[170.108,-43.75],[170.14,-43.725],[170.17,-43.7]], mid:-1},
+  c1:{day:'d4', from:'omarama', to:'clay', km:10, time:'15m', each:true, via:'Henburn Road, partly gravel', path:[[169.97,-44.49],[169.93,-44.475],[169.88,-44.455]], mid:-1},
   x1:{day:'d2', from:'teanau', to:'milford', km:120, time:'2h', each:true, via:'Milford Road (SH94) · no fuel at Milford',
       path:[[167.726,-45.4212],[167.76,-45.33],[167.8,-45.22],[167.88,-45.12],[167.97,-45.02],[168.05,-44.9],[168.12,-44.82],[168.06,-44.77],[168.0,-44.74],[167.95,-44.7],[167.926,-44.67]], mid:4},
   x2:{day:'d7', opt:true, from:'tekapo', to:'cook', km:105, time:'1h 20m', each:true, via:'via SH8 & SH80 along Lake Pukaki',
@@ -552,16 +555,17 @@ const DAYS = [
    {tm:'17:15', t:'Check in at Altitude on Aubrey', s:'booked', m:'2208 Aubrey Road, Wanaka 9305', n:'Check-in 15:00 – 23:00.'},
    {tm:'', t:'Confirm the extra mattress', s:'check', n:'Requested on the booking. Message the property to confirm.'},
  ]},
- {id:'d4', wd:'Tue', dn:27, title:'Alpine drive: Hooker Valley & Aoraki / Mt Cook', base:'wanaka', legs:['m1','t1'],
-  leave:{tm:'07:30', t:'Leave Altitude on Aubrey', n:'Straight through with one photo stop, so you reach White Horse Hill about 10:30. Lindis Pass, Lake Pukaki and the salmon shop are all on Thursday\'s drive anyway.'}, items:[
-   {tm:'07:30', t:'Leave Wānaka', s:'plan', n:'Over the Lindis Pass and through Twizel without stopping. Eat breakfast in the car.'},
-   {tm:'09:45', t:'Lake Pukaki · Peters Lookout', s:'plan', m:'Peters Lookout, Mount Cook Road', n:'10 min photo stop. The best view of the lake with Aoraki at the end of it.'},
-   {tm:'10:30', t:'White Horse Hill car park · Hooker Valley Track', s:'plan', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/', m:'Hooker Valley Track car park, White Horse Hill', n:'About 10 km and 3 hours return, mostly flat, with three swing bridges and Hooker Lake below Aoraki. If the car park is full, park in the village and walk in (adds about 1 hour return).'},
-   {tm:'13:45', t:'Quick lunch in Mount Cook Village', s:'plan', q:'The Hermitage Hotel Mount Cook', m:'The Hermitage Hotel, Aoraki Mount Cook Village', n:'The Hermitage café for the window view of Aoraki, or Old Mountaineers\' Café. Keep it to 45 min.'},
-   {tm:'14:45', t:'Tasman Glacier View & Blue Lakes', s:'plan', q:'Tasman Glacier View Blue Lakes', m:'Blue Lakes and Tasman Glacier View car park, Tasman Valley Road', n:'Turn onto Tasman Valley Road just before the village, about 8 km to the car park. Steep steps up to the glacier lake view, about 45 min return.'},
-   {tm:'15:45', t:'Drive back to Wānaka', s:'plan', n:'2h 45m. One toilet stop in Twizel or Omarama.'},
-   {tm:'18:45', t:'Back in Wānaka', s:'plan', n:'Sunset is about 20:20, so you are home in daylight.'},
-   {tm:'', t:'Skipped today', s:'idea', q:0, n:'Kea Point, Omarama Clay Cliffs, the Lindis Pass stop and the salmon shop. The last two are on Thursday\'s drive to Tekapo.'},
+ {id:'d4', wd:'Tue', dn:27, title:'Alpine drive: Hooker Valley & Aoraki / Mt Cook', base:'wanaka', legs:['m1','t1','c1'],
+  leave:{tm:'07:30', t:'Leave Altitude on Aubrey', n:'About 6½ hours of driving with the Clay Cliffs, plus the 3-hour Hooker Valley walk. Pack lunch tonight; there is no lunch stop.'}, items:[
+   {tm:'07:30', t:'Leave Wānaka', s:'plan', n:'Over the Lindis Pass, through Omarama and Twizel, then up the Mount Cook Road along Lake Pukaki.'},
+   {tm:'08:20', t:'Lindis Pass summit', s:'plan', m:'Lindis Pass summit lookout', n:'10 min stop at the 971 m lookout.'},
+   {tm:'09:50', t:'Lake Pukaki · Peters Lookout', s:'plan', m:'Peters Lookout, Mount Cook Road', n:'10 min photo stop. The classic view of the lake with Aoraki at the end of it.'},
+   {tm:'10:40', t:'White Horse Hill car park · Hooker Valley Track', s:'plan', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/', m:'Hooker Valley Track car park, White Horse Hill', n:'About 10 km and 3 hours return, mostly flat, three swing bridges. Eat your packed lunch at Hooker Lake below Aoraki. If the car park is full, park in the village and walk in (adds about 1 hour).'},
+   {tm:'13:45', t:'Tasman Glacier View & Blue Lakes', s:'plan', q:'Tasman Glacier View Blue Lakes', m:'Blue Lakes and Tasman Glacier View car park, Tasman Valley Road', n:'Turn onto Tasman Valley Road just before the village, about 8 km to the car park. Steep steps up to the glacier lake view, about 45 min return.'},
+   {tm:'14:40', t:'Drive towards Omarama', s:'plan', n:'About 1h 15m, past Lake Pukaki and Twizel.'},
+   {tm:'16:00', t:'Omarama Clay Cliffs', s:'plan', q:'Omarama Clay Cliffs', m:'Omarama Clay Cliffs, Henburn Road', n:'About 10 km off the highway, partly gravel. NZ$5 per car in an honesty box, so bring cash. Close the farm gate behind you. About 30–40 min to walk in among the pinnacles.'},
+   {tm:'16:45', t:'Drive home over the Lindis Pass', s:'plan', n:'About 1h 30m.'},
+   {tm:'18:15', t:'Back in Wānaka', s:'plan', n:'Sunset is about 20:20, so you are home in daylight.'},
  ]},
  {id:'d5', wd:'Wed', dn:28, title:'Brewster Track & Blue Pools', base:'wanaka', legs:['b1'],
   leave:{tm:'07:00', t:'Leave Altitude on Aubrey', n:'1h 15m to the Fantail Falls car park on the Haast Pass, then a 6–8 hour hike. An early start keeps you off the mountain in the late afternoon.'}, items:[
@@ -645,7 +649,7 @@ const FOOD={
   {tm:'19:00', t:'Dinner: cook at the house', s:'food', q:0, n:'Pick up NZ lamb at a Wānaka supermarket and use the barbecue and kitchen at Altitude on Aubrey.'},
  ],
  d4:[
-  {tm:'07:15', t:'Breakfast and snacks to go', s:'food', q:0, n:'Something to eat in the car, plus water and snacks for the Hooker Valley walk.'},
+  {tm:'07:15', t:'Breakfast to go and a packed lunch', s:'food', q:0, n:'Make lunch tonight. Eat it at Hooker Lake. Bring water and snacks too, as there is no lunch stop today.'},
   {tm:'19:00', t:'Dinner in Wānaka', s:'food', q:0, bk:1, n:'Book for 7, or cook at the house.', opts:[
     {b:'Big Fig', n:'Middle Eastern bowls, quick and filling'},
     {b:'Francesca\'s Italian Kitchen', n:'local favourite for pasta and pizza'}]},
@@ -958,6 +962,7 @@ Object.entries(LEGS).forEach(([id,l])=>{
 });
 const PINS={},PINL=[];
 Object.entries(PLACES).forEach(([id,p])=>{
+  if(p.nopin)return;
   const sm=p.kind!=='stay';
   const o=addOv(`<div class="dot">${ICON[p.kind]}</div>${p.n?`<span class="num">${p.n}</span>`:''}<span class="nm">${p.short||p.name}</span>`,
     'pin k-'+p.kind+(sm?' sm':'')+(p.left?' left':''),p.ll[0],p.ll[1]);
@@ -1042,8 +1047,10 @@ const CAUTION={
  d3:['Long day: about 5 hours of driving. Swap drivers at Glenorchy.',
      'The road past Glenorchy to Paradise is gravel. Check the Avis terms before going.',
      'Crown Range is steep and winding, and can get snow. Check the road status before you leave Queenstown.'],
- d4:['Fill up in Wānaka tonight so you can drive straight through. About 6 hours of driving, so swap drivers.',
-     'You arrive at White Horse Hill about 10:30, when the car park is often full. Be ready to park in the village and walk in.',
+ d4:['Pack lunch tonight. There is no lunch stop, and nothing to buy on the Hooker Valley Track.',
+     'Fill up in Wānaka tonight. About 6½ hours of driving, so swap drivers.',
+     'You reach White Horse Hill about 10:40, when the car park is often full. Be ready to park in the village and walk in.',
+     'Bring NZ$5 in cash for the Clay Cliffs honesty box.',
      'Mountain weather changes fast. Bring warm and waterproof layers even if Wānaka is sunny.'],
  d5:['Advanced track: very steep, about 1,000 m of climbing and 6–8 hours return. Turn around by 12:30 wherever you are.',
      'The Haast River has no bridge. Don\'t start if rain is forecast or the river is high, fast or discoloured. It can rise while you are up there.',
