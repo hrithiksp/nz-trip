@@ -478,13 +478,15 @@ const PLACES = {
   arthurs:{mq:'Shotover Jet, Arthurs Point', name:'Shotover Jet & Onsen', kind:'spot', ll:[168.69,-44.985], days:['d9'], legIn:'a1', sub:'Arthurs Point, Sun 1 Nov morning'},
   brewster:{mq:'Fantail Falls car park, Haast Pass', name:'Brewster Track', kind:'hike', ll:[169.15,-44.1], days:['d5'], legIn:'b1', sub:'Brewster Hut and glacier views, Wed 28 Oct · 6–8 hr return'},
   bluepools:{mq:'Blue Pools Track car park, Makarora', name:'Blue Pools', kind:'spot', ll:[169.205,-44.19], days:['d5'], sub:'Short walk on the drive back, Wed 28 Oct'},
-  isthmus:{mq:'Isthmus Peak Track car park, Stewart Creek, State Highway 6', name:'Isthmus Peak', kind:'hike', ll:[169.24,-44.515], days:['d4'], legIn:'h1', sub:'Hike day Tue 27 Oct · 6–7 hr return'},
   tekapo:{mq:'Lake Tekapo township, New Zealand', name:'Lake Tekapo', kind:'stay', n:3, ll:[170.477,-44.004], days:['d6','d7','d8'], legIn:'l3',
           stay:{prop:'Airbnb · entire home', via:'Airbnb', nights:2, dates:'Thu 29 – Sat 31 Oct',
             addr:'Lake Tekapo (exact address in the Airbnb app)', host:'Christopher Francis', checkin:'TBC', checkout:'TBC',
             rooms:'Entire home · 6 beds · 7 guests', price:'AUD 1,602.32',
             notes:['!Check-in and check-out times not noted yet','Partial refund if cancelled before 3:00 pm, 22 Oct']}},
-  cook:  {mq:'Hooker Valley Track car park, White Horse Hill', name:'Aoraki / Mt Cook', kind:'spot', ll:[170.098,-43.735], days:['d7'], legIn:'x2', sub:'Day-trip option from Lake Tekapo'},
+  lindis:{mq:'Lindis Pass summit lookout', name:'Lindis Pass', kind:'spot', ll:[169.65,-44.59], days:['d4','d6'], sub:'Summit lookout at 971 m'},
+  peters:{mq:"Peters Lookout, Mount Cook Road", name:'Peters Lookout', kind:'spot', ll:[170.06,-44.07], days:['d4'], sub:'Lake Pukaki with Aoraki behind, Tue 27 Oct'},
+  tasman:{mq:'Blue Lakes and Tasman Glacier View car park, Tasman Valley Road', name:'Tasman Glacier View', kind:'spot', ll:[170.17,-43.7], days:['d4'], legIn:'t1', sub:'Blue Lakes and the glacier lake, Tue 27 Oct'},
+  cook:  {mq:'Hooker Valley Track car park, White Horse Hill', name:'Aoraki / Mt Cook', kind:'spot', ll:[170.098,-43.735], days:['d4','d7'], legIn:'m1', sub:'Hooker Valley Track from White Horse Hill · Tue 27 Oct alpine drive'},
   qtown: {mq:'Queenstown, New Zealand', name:'Queenstown', kind:'stay', n:4, ll:[168.662,-45.031], days:['d8','d9'], legIn:'l4', left:true,
           stay:{prop:'Airbnb · entire apartment', via:'Airbnb', nights:1, dates:'Sat 31 Oct – Sun 1 Nov',
             addr:'Queenstown (exact address in the Airbnb app)', host:'Ray', checkin:'TBC', checkout:'TBC',
@@ -502,10 +504,11 @@ const LEGS = {
   l4:{day:'d8', from:'tekapo', to:'qtown', km:260, time:'3h 15m', via:'straight run via Lindis Pass, Cromwell & Kawarau Gorge',
       path:LINDIS.slice(3).reverse().concat([[169.41,-44.84],[169.33,-44.92],[169.26,-44.99],[169.19,-45.045],[169.1,-45.03],[169.0,-45.03],[168.92,-45.02],[168.84,-44.995],[168.78,-45.015],[168.739,-45.021],[168.70,-45.026],[168.662,-45.031]]), mid:7},
   l5:{day:'d9', from:'qtown', to:'zqn', km:8, time:'15m', via:'Return rental car, then check in', path:[[168.662,-45.031],[168.70,-45.026],[168.739,-45.021]], mid:-1},
-  h1:{day:'d4', from:'wanaka', to:'isthmus', km:40, time:'35m', each:true, via:'via Albert Town and the Lake Hāwea shore (SH6)', path:[[169.1438,-44.6812],[169.17,-44.69],[169.21,-44.62],[169.22,-44.52],[169.24,-44.515]], mid:2},
   g1:{day:'d3', from:'qtown', to:'glenorchy', km:46, time:'45m', each:true, via:'along Lake Wakatipu, past Bob\'s Cove and Bennett\'s Bluff', path:[[168.662,-45.031],[168.64,-45.025],[168.58,-45.012],[168.5,-44.968],[168.43,-44.905],[168.385,-44.86]], mid:3},
   a1:{day:'d9', from:'qtown', to:'arthurs', km:7, time:'10m', each:true, via:'Gorge Road to Arthurs Point', path:[[168.662,-45.031],[168.675,-45.005],[168.69,-44.985]], mid:-1},
   b1:{day:'d5', from:'wanaka', to:'brewster', km:85, time:'1h 15m', each:true, via:'via Lake Hāwea, Makarora and the Haast Pass (SH6)', path:[[169.1438,-44.6812],[169.17,-44.69],[169.21,-44.62],[169.22,-44.52],[169.24,-44.40],[169.25,-44.3],[169.23,-44.23],[169.205,-44.19],[169.15,-44.1]], mid:5},
+  m1:{day:'d4', from:'wanaka', to:'cook', km:210, time:'2h 45m', each:true, via:'Lindis Pass, Omarama, Twizel and Lake Pukaki (SH8, SH80)', path:[[169.1438,-44.6812],[169.2,-44.715],[169.28,-44.73],[169.38,-44.77],[169.48,-44.72],[169.58,-44.65],[169.65,-44.59],[169.78,-44.53],[169.97,-44.49],[170.04,-44.38],[170.1,-44.26],[170.14,-44.23],[170.14,-44.215],[170.07,-44.16],[170.05,-44.05],[170.08,-43.92],[170.1,-43.82],[170.098,-43.735]], mid:8},
+  t1:{day:'d4', from:'cook', to:'tasman', km:8, time:'15m', each:true, via:'Tasman Valley Road', path:[[170.098,-43.735],[170.108,-43.75],[170.14,-43.725],[170.17,-43.7]], mid:-1},
   x1:{day:'d2', from:'teanau', to:'milford', km:120, time:'2h', each:true, via:'Milford Road (SH94) · no fuel at Milford',
       path:[[167.726,-45.4212],[167.76,-45.33],[167.8,-45.22],[167.88,-45.12],[167.97,-45.02],[168.05,-44.9],[168.12,-44.82],[168.06,-44.77],[168.0,-44.74],[167.95,-44.7],[167.926,-44.67]], mid:4},
   x2:{day:'d7', opt:true, from:'tekapo', to:'cook', km:105, time:'1h 20m', each:true, via:'via SH8 & SH80 along Lake Pukaki',
@@ -549,14 +552,19 @@ const DAYS = [
    {tm:'17:15', t:'Check in at Altitude on Aubrey', s:'booked', m:'2208 Aubrey Road, Wanaka 9305', n:'Check-in 15:00 – 23:00.'},
    {tm:'', t:'Confirm the extra mattress', s:'check', n:'Requested on the booking. Message the property to confirm.'},
  ]},
- {id:'d4', wd:'Tue', dn:27, title:'Hike day: Isthmus Peak', base:'wanaka', legs:['h1'],
-  leave:{tm:'07:30', t:'Leave Altitude on Aubrey', n:'35 min to the Stewart Creek car park on SH6 at The Neck. Start early: 6–7 hours return with no shade.'}, items:[
-   {tm:'07:30', t:'Drive to Stewart Creek car park', s:'plan', m:'Isthmus Peak Track car park, Stewart Creek, State Highway 6', n:'About 40 km along the edge of Lake Hāwea. Small car park, so arrive early.'},
-   {tm:'08:15', t:'Isthmus Peak Track', s:'plan', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/matatiaho-conservation-area/', n:'About 8 km and 3–4 hr up to the 1,385 m summit, then back the same way. Steep and rocky, with views over both Lake Wānaka and Lake Hāwea. This is the usual swap for Roys Peak, which is closed 1 Oct – 10 Nov for lambing.'},
-   {tm:'', t:'Check conditions the day before', s:'check', n:'Snow and avalanche risk is possible up high until November. Check the Mt Aspiring forecast and the NZ Avalanche Advisory, and turn back if the ridge is snowy.'},
-   {tm:'', t:'Pack for the hike', s:'plan', n:'At least 2 L of water each (none on the track), lunch, warm and waterproof layers, sunscreen, hats, sturdy shoes. Poles help on the way down.'},
-   {tm:'15:30', t:'Back at the house, hot tub', s:'plan'},
-   {tm:'20:00', t:'That Wānaka Tree at sunset', s:'idea', n:'Walking distance from the lakefront.'},
+ {id:'d4', wd:'Tue', dn:27, title:'Alpine drive: Hooker Valley & Aoraki / Mt Cook', base:'wanaka', legs:['m1','t1'],
+  leave:{tm:'06:30', t:'Leave Altitude on Aubrey', n:'About 2h 45m each way, about 6 hours of driving in total. Leaving early gets you a parking space at White Horse Hill and the clearest mountain views.'}, items:[
+   {tm:'06:30', t:'Leave Wānaka', s:'plan', n:'Over the Lindis Pass, through Omarama and Twizel, then up the Mount Cook Road along Lake Pukaki.'},
+   {tm:'07:20', t:'Lindis Pass summit', s:'plan', m:'Lindis Pass summit lookout', n:'Short stop at the 971 m lookout. Tussock high country in the morning light.'},
+   {tm:'08:30', t:'Twizel coffee and toilet stop', s:'plan', m:'Twizel town centre', n:'Last proper town before Mt Cook. 15 min.'},
+   {tm:'09:00', t:'Lake Pukaki · Peters Lookout', s:'plan', m:'Peters Lookout, Mount Cook Road', n:'The classic view of the turquoise lake with Aoraki at the end of it. About 30 min before Mt Cook Village.'},
+   {tm:'09:45', t:'White Horse Hill car park · Hooker Valley Track', s:'plan', inf:'https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/', m:'Hooker Valley Track car park, White Horse Hill', n:'About 10 km and 3 hours return, mostly flat, with three swing bridges and the Hooker Lake at the end, below Aoraki.'},
+   {tm:'12:45', t:'Kea Point (optional)', s:'idea', q:'Kea Point Track Mount Cook', m:'Hooker Valley Track car park, White Horse Hill', n:'From the same car park, about 1 hour return to a lookout over the Mueller Glacier lake. Skip it if you are running late.'},
+   {tm:'13:30', t:'Mount Cook Village · The Hermitage', s:'plan', q:'The Hermitage Hotel Mount Cook', m:'The Hermitage Hotel, Aoraki Mount Cook Village', n:'Lunch with the big window view of Aoraki. The Sir Edmund Hillary Alpine Centre is inside if you have time.'},
+   {tm:'14:45', t:'Tasman Glacier View & Blue Lakes', s:'plan', q:'Tasman Glacier View Blue Lakes', m:'Blue Lakes and Tasman Glacier View car park, Tasman Valley Road', n:'Turn onto Tasman Valley Road just before the village, about 8 km to the car park. Steep steps up to the glacier lake view, about 45 min return including the Blue Lakes.'},
+   {tm:'15:45', t:'Head back to Wānaka', s:'plan', n:'Same road home, about 2h 45m.'},
+   {tm:'17:00', t:'Omarama Clay Cliffs (only if there is time)', s:'idea', q:'Omarama Clay Cliffs', m:'Omarama Clay Cliffs, Henburn Road', n:'About 10 km off the highway, partly gravel, NZ$5 per car in an honesty box, about 30 min to walk. Fine to skip on a long day.'},
+   {tm:'18:30', t:'Back in Wānaka', s:'plan'},
  ]},
  {id:'d5', wd:'Wed', dn:28, title:'Brewster Track & Blue Pools', base:'wanaka', legs:['b1'],
   leave:{tm:'07:00', t:'Leave Altitude on Aubrey', n:'1h 15m to the Fantail Falls car park on the Haast Pass, then a 6–8 hour hike. An early start keeps you off the mountain in the late afternoon.'}, items:[
@@ -640,9 +648,10 @@ const FOOD={
   {tm:'19:00', t:'Dinner: cook at the house', s:'food', q:0, n:'Pick up NZ lamb at a Wānaka supermarket and use the barbecue and kitchen at Altitude on Aubrey.'},
  ],
  d4:[
-  {tm:'07:15', t:'Packed lunch and snacks for the hike', s:'food', q:0, n:'Grab Whittaker\'s chocolate and Pineapple Lumps for the summit.'},
-  {tm:'16:00', t:'Ice cream: Patagonia Chocolates, Wānaka lakefront', s:'food', q:'Patagonia Chocolates Wanaka', n:'Well earned after the hike.'},
-  {tm:'19:00', t:'Dinner in Wānaka', s:'food', q:0, bk:1, n:'Book for 7.', opts:[
+  {tm:'06:15', t:'Breakfast and snacks to go', s:'food', q:0, n:'Grab something you can eat in the car, plus water and snacks for the Hooker Valley walk.'},
+  {tm:'13:30', t:'Lunch at The Hermitage', s:'food', q:'The Hermitage Hotel Mount Cook cafe', n:'Café or buffet with a view straight up at Aoraki. Old Mountaineers\' Café in the village is the cheaper alternative.'},
+  {tm:'15:55', t:'Mt Cook Alpine Salmon shop, Lake Pūkaki', s:'food', q:'Mt Cook Alpine Salmon shop Lake Pukaki', n:'On the way home at the Pūkaki visitor centre. Pick up salmon for dinner, or wait for Thursday.'},
+  {tm:'19:00', t:'Dinner in Wānaka', s:'food', q:0, bk:1, n:'Book for 7, or cook the salmon at the house.', opts:[
     {b:'Big Fig', n:'Middle Eastern bowls, quick and filling'},
     {b:'Francesca\'s Italian Kitchen', n:'local favourite for pasta and pizza'}]},
  ],
@@ -1013,7 +1022,7 @@ function sunTimes(y,m,d,lat,lon,zen){
 const hm=m=>`${Math.floor(m/60)}:${String(Math.round(m%60)).padStart(2,'0')}`.replace(/:60$/,':59');
 const dayDate=d=>d.mon==='Nov'?[2026,11,d.dn]:[2026,10,d.dn];
 /* typical late-October temps, from NIWA 1991–2020 normals (Oct/Nov interpolated). Swap in forecasts closer to the date. */
-const TEMPS={d1:[16,5,'Te Anau'],d2:[15,6,'Milford Sound, often wet'],d3:[17,6,'Wānaka'],d4:[17,6,'Wānaka, colder on the summit'],d5:[17,6,'Wānaka, much colder at Brewster Hut'],d6:[16,4,'Lake Tekapo'],d7:[16,4,'Lake Tekapo, cooler at Mt Cook'],d8:[16,5,'Queenstown'],d9:[16,5,'Queenstown']};
+const TEMPS={d1:[16,5,'Te Anau'],d2:[15,6,'Milford Sound, often wet'],d3:[17,6,'Wānaka'],d4:[17,6,'Wānaka, cooler at Mt Cook'],d5:[17,6,'Wānaka, much colder at Brewster Hut'],d6:[16,4,'Lake Tekapo'],d7:[16,4,'Lake Tekapo, cooler at Mt Cook'],d8:[16,5,'Queenstown'],d9:[16,5,'Queenstown']};
 /* total driving for a day: every leg, out-and-back legs counted twice, alternatives left out */
 const toMins=t=>{const h=/(\d+)h/.exec(t),m=/(\d+)m/.exec(t);return (h?+h[1]*60:0)+(m?+m[1]:0);};
 const hmDur=m=>m>=60?`${Math.floor(m/60)}h${m%60?' '+String(m%60).padStart(2,'0')+'m':''}`:`${m} min`;
@@ -1038,8 +1047,10 @@ const CAUTION={
  d3:['Long day: about 5 hours of driving. Swap drivers at Glenorchy.',
      'The road past Glenorchy to Paradise is gravel. Check the Avis terms before going.',
      'Crown Range is steep and winding, and can get snow. Check the road status before you leave Queenstown.'],
- d4:['Check the DOC page and NZ Avalanche Advisory the evening before. Turn back if the ridge has snow.',
-     'At least 2 L of water each. There is no water or shade on the track.'],
+ d4:['Long day: about 6 hours of driving. Swap drivers, and fill up in Wānaka tonight and again in Twizel.',
+     'Leave by 06:30. The White Horse Hill car park fills by mid-morning.',
+     'Mountain weather changes fast. Bring warm and waterproof layers even if Wānaka is sunny.',
+     'Omarama Clay Cliffs are optional. Skip them if you are behind; the drive home is 2h 45m.'],
  d5:['Advanced track: very steep, about 1,000 m of climbing and 6–8 hours return. Turn around by 12:30 wherever you are.',
      'The Haast River has no bridge. Don\'t start if rain is forecast or the river is high, fast or discoloured. It can rise while you are up there.',
      'Late October is still avalanche season above the bushline. Check the DOC page and NZ Avalanche Advisory the evening before.',
